@@ -29,11 +29,20 @@ import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 import useAuthStore from '@/store/useAuthStore';
 
 import { ApiUserDataReturn } from '@/types/api';
-import { User } from '@/types/auth';
 
 type LoginData = {
   email: string;
   password: string;
+};
+
+type LoginApiReturn = {
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+  name: string;
+  email: string;
+  passwordResetToken: string;
+  passwordResetTokenExpiresAt: number;
 };
 
 type LoginPageProps = InferGetStaticPropsType<typeof getStaticProps> &
@@ -58,10 +67,15 @@ function LoginPage({ role }: LoginPageProps) {
   const onSubmit: SubmitHandler<LoginData> = (data) => {
     toast.promise(
       axiosClient
-        .post<ApiUserDataReturn<User>>(`/${role}/login`, data)
+        .post<ApiUserDataReturn<LoginApiReturn>>(`/${role}/login`, data)
         .then((res) => {
-          const data = res.data.data;
-          login(data);
+          const response = res.data;
+          login({
+            token: response.token,
+            id: response.data.id,
+            email: response.data.email,
+            role: response.role,
+          });
         }),
       {
         ...DEFAULT_TOAST_MESSAGE,

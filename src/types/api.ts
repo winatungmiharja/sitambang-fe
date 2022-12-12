@@ -9,6 +9,11 @@ export interface ApiReturn<D> {
   data: D;
 }
 
+export interface ApiRouteReturn {
+  message: string;
+  error: string;
+}
+
 export interface ApiUserDataReturn<D> {
   message: string;
   data: D;

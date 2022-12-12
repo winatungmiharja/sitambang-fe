@@ -1,13 +1,17 @@
 /* eslint-disable unused-imports/no-unused-vars */
+import axios from 'axios';
 import {
   GetStaticPaths,
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from 'next';
+import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
+import axiosClient from '@/lib/axios';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 
 import Button from '@/components/buttons/Button';
@@ -21,8 +25,11 @@ import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 
 import { GET_ROLES_FROM_EN, ROLES } from '@/constant/roles';
+import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 import RegisterFactory from '@/container/register/RegisterFactory';
 import useAuthStore from '@/store/useAuthStore';
+
+import { ApiRouteReturn } from '@/types/api';
 
 type RegisterData = {
   name: string;
@@ -34,6 +41,7 @@ type RegisterPageProps = InferGetStaticPropsType<typeof getStaticProps> &
   WithAuthProps;
 
 function RegisterPage({ role }: RegisterPageProps) {
+  const route = useRouter();
   const roles = ROLES.map((role) => role);
   const isLoading = useLoadingToast();
 
@@ -41,33 +49,38 @@ function RegisterPage({ role }: RegisterPageProps) {
   const login = useAuthStore.useLogin();
   //#endregion  //*======== Store ===========
 
-  //#region  //*============== Form
+  //#region  //*============== Form ===========
   const methods = useForm<RegisterData>({
     mode: 'onTouched',
   });
   const { handleSubmit } = methods;
-  //#endregion  //*============== Form
+  //#endregion  //*============== Form ===========
 
-  //#region //*============== Form Submit
-  const onSubmit: SubmitHandler<RegisterData> = (data) => {
+  //#region //*============== Form Submit ===========
+  const onSubmit: SubmitHandler<RegisterData> = async (data) => {
     // eslint-disable-next-line no-console
     console.log(data);
-    // toast.promise(
-    //   axiosClient
-    //     .post<ApiUserDataReturn<User>>(`/${role}/register`, data)
-    //     .then((res) => {
-    //       const data = res.data.data;
-    //       login(data);
-    //     }),
-    //   {
-    //     ...DEFAULT_TOAST_MESSAGE,
-    //     success: 'Berhasil! Anda bisa masuk ke akun anda',
-    //   }
-    // );
-
+    try {
+      const response = await axiosClient.post<ApiRouteReturn>(
+        `/${role}/register`,
+        data
+      );
+      if (response.data.error) {
+        toast.error(response.data.error);
+        return;
+      }
+      toast.success(response.data.message);
+      route.replace(`/login/${role}`);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.error);
+        return;
+      }
+      toast.error(DEFAULT_TOAST_MESSAGE.error);
+    }
     return;
   };
-  //#endregion //*============== Form Submit
+  //#endregion //*============== Form Submit ===========
 
   return (
     <Layout withDashboardShell={false}>
