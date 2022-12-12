@@ -29,10 +29,10 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
   };
 
   return (
-    <div className='flex relative z-40 flex-shrink-0 h-16 bg-blue-50 border-b border-gray-200'>
+    <div className='flex relative z-40 flex-shrink-0 h-16 bg-white border-b border-gray-200'>
       <button
         type='button'
-        className='px-4 text-gray-500 border-r border-gray-200 md:hidden focus:ring-2 focus:ring-inset focus:ring-indigo-500 focus:outline-none'
+        className='px-4 text-gray-500 border-r border-gray-200 md:hidden focus:ring-2 focus:ring-inset focus:ring-primary-500 focus:outline-none'
         onClick={() => setSidebarOpen(true)}
       >
         <span className='sr-only'>Open sidebar</span>
@@ -45,7 +45,7 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
         <div className='flex items-center ml-4 md:ml-6'>
           <button
             type='button'
-            className='p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none'
+            className='p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-none'
           >
             <span className='sr-only'>View notifications</span>
             <HiOutlineBell className='w-6 h-6' aria-hidden='true' />
@@ -54,7 +54,7 @@ export default function Header({ setSidebarOpen }: HeaderProps) {
           {/* Profile dropdown */}
           <Menu as='div' className='relative ml-3'>
             <div>
-              <Menu.Button className='flex items-center max-w-xs text-sm rounded-full focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none'>
+              <Menu.Button className='flex items-center max-w-xs text-sm rounded-full focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:outline-none'>
                 <span className='sr-only'>Open user menu</span>
                 <img
                   className='w-8 h-8 rounded-full'

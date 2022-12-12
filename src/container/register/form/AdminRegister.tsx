@@ -3,15 +3,19 @@ import React from 'react';
 import Input from '@/components/forms/Input';
 import PasswordInput from '@/components/forms/PasswordInput';
 
-export default function AdminLogin() {
+export default function AdminRegister() {
   return (
     <React.Fragment>
+      <Input
+        id='name'
+        label='Nama'
+        validation={{ required: 'Nama harus diisi' }}
+      />
       <Input
         id='email'
         label='Email'
         validation={{ required: 'Email harus diisi' }}
       />
-
       <PasswordInput
         id='password'
         label='Password'

@@ -3,12 +3,12 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
-  HiOutlineCalendar,
-  HiOutlineChartBar,
+  HiOutlineBadgeCheck,
+  HiOutlineBriefcase,
+  HiOutlineDocumentAdd,
+  HiOutlineDocumentSearch,
   HiOutlineDocumentText,
-  HiOutlineFolder,
-  HiOutlineLightBulb,
-  HiOutlineTag,
+  HiOutlineIdentification,
   HiOutlineUsers,
   HiOutlineX,
 } from 'react-icons/hi';
@@ -19,39 +19,70 @@ import Logo from '@/components/Logo';
 import useAuthStore from '@/store/useAuthStore';
 
 //#region  //*=========== Role Navigation ===========
-const employeeNav = [
-  { name: 'Atlet', href: '/pelatih/atlet', icon: HiOutlineUsers },
-  {
-    name: 'Rekomendasi',
-    href: '/pelatih/rekomendasi/edit',
-    icon: HiOutlineLightBulb,
-  },
-  { name: 'Reports', href: '#', icon: HiOutlineChartBar },
-];
 const adminNav = [
-  { name: 'Pelatih', href: '/admin/pelatih', icon: HiOutlineUsers },
-  { name: 'Jenis Latihan', href: '/admin/jenis-latihan', icon: HiOutlineTag },
   {
-    name: 'Cabang Olahraga',
-    href: '/admin/cabang-olahraga',
+    name: 'Verifikasi Pemesanan',
+    href: '/admin/verifikasi-pemesanan',
+    icon: HiOutlineBadgeCheck,
+  },
+  {
+    name: 'Riwayat Transaksi',
+    href: '/admin/riwayat-transaksi',
     icon: HiOutlineDocumentText,
+  },
+  {
+    name: 'Data Barang',
+    href: '/admin/barang',
+    icon: HiOutlineDocumentSearch,
+  },
+  {
+    name: 'Data Peralatan',
+    href: '/admin/peralatan',
+    icon: HiOutlineBriefcase,
+  },
+  {
+    name: 'Data Karyawan',
+    href: '/admin/karyawan',
+    icon: HiOutlineIdentification,
+  },
+  {
+    name: 'Data Pembeli',
+    href: '/admin/pembeli',
+    icon: HiOutlineUsers,
+  },
+];
+const employeeNav = [
+  {
+    name: 'Data Barang',
+    href: '/employee/barang',
+    icon: HiOutlineDocumentSearch,
+  },
+  {
+    name: 'Riwayat Transaksi',
+    href: '/employee/riwayat-transaksi',
+    icon: HiOutlineDocumentText,
+  },
+  {
+    name: 'Buat Pemesanan',
+    href: '/employee/buat-pemesanan',
+    icon: HiOutlineDocumentAdd,
   },
 ];
 const buyerNav = [
   {
-    name: 'Periodisasi Latihan',
-    href: '/atlet/periodisasi-latihan',
-    icon: HiOutlineCalendar,
+    name: 'Data Barang',
+    href: '/buyer/barang',
+    icon: HiOutlineDocumentSearch,
   },
   {
-    name: 'Tes Fisik',
-    href: '/atlet/tes-fisik',
-    icon: HiOutlineFolder,
+    name: 'Riwayat Transaksi',
+    href: '/buyer/riwayat-transaksi',
+    icon: HiOutlineDocumentText,
   },
   {
-    name: 'Rekomendasi',
-    href: '/atlet/rekomendasi',
-    icon: HiOutlineLightBulb,
+    name: 'Buat Pemesanan',
+    href: '/buyer/buat-pemesanan',
+    icon: HiOutlineDocumentAdd,
   },
 ];
 const navigationObj = {
@@ -105,7 +136,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
             leaveFrom='translate-x-0'
             leaveTo='-translate-x-full'
           >
-            <div className='flex relative flex-col flex-1 pt-5 pb-4 w-full max-w-xs bg-blue-50'>
+            <div className='flex relative flex-col flex-1 pt-5 pb-4 w-full max-w-xs bg-white'>
               <Transition.Child
                 as={React.Fragment}
                 enter='ease-in-out duration-300'
@@ -175,7 +206,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
               <Logo />
             </div>
             <div className='flex flex-col flex-grow mt-5'>
-              <nav className='flex-1 px-2 space-y-1 bg-blue-50'>
+              <nav className='flex-1 px-2 space-y-1 bg-white'>
                 {navigation.map((item) => {
                   return (
                     <UnstyledLink

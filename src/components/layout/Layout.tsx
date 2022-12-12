@@ -23,7 +23,7 @@ export default function Layout({
 
   if (withDashboardShell) {
     return (
-      <div className='flex overflow-hidden h-screen bg-blue-50'>
+      <div className='flex overflow-hidden h-screen bg-white'>
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className='flex flex-col flex-1 mx-auto w-0 max-w-6xl md:px-8 lg:max-w-6xl xl:px-4'>
           <Header setSidebarOpen={setSidebarOpen} />

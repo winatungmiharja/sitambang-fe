@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-  baseURL: 'http://167.71.210.149',
+  baseURL: 'https://sitambang.herokuapp.com',
   headers: {
     Authorization: '',
     'Content-Type': 'application/json',

@@ -7,14 +7,10 @@ import {
 import { ParsedUrlQuery } from 'querystring';
 import * as React from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 
-import axiosClient from '@/lib/axios';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 
 import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
-import PasswordInput from '@/components/forms/PasswordInput';
 import withAuth, { WithAuthProps } from '@/components/hoc/withAuth';
 import Layout from '@/components/layout/Layout';
 import CustomLink from '@/components/links/CustomLink';
@@ -25,21 +21,19 @@ import NextImage from '@/components/NextImage';
 import Seo from '@/components/Seo';
 
 import { GET_ROLES_FROM_EN, ROLES } from '@/constant/roles';
-import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
+import RegisterFactory from '@/container/register/RegisterFactory';
 import useAuthStore from '@/store/useAuthStore';
 
-import { ApiUserDataReturn } from '@/types/api';
-import { User } from '@/types/auth';
-
-type LoginData = {
+type RegisterData = {
+  name: string;
   email: string;
   password: string;
 };
 
-type LoginPageProps = InferGetStaticPropsType<typeof getStaticProps> &
+type RegisterPageProps = InferGetStaticPropsType<typeof getStaticProps> &
   WithAuthProps;
 
-function LoginPage({ role }: LoginPageProps) {
+function RegisterPage({ role }: RegisterPageProps) {
   const roles = ROLES.map((role) => role);
   const isLoading = useLoadingToast();
 
@@ -48,26 +42,28 @@ function LoginPage({ role }: LoginPageProps) {
   //#endregion  //*======== Store ===========
 
   //#region  //*============== Form
-  const methods = useForm<LoginData>({
+  const methods = useForm<RegisterData>({
     mode: 'onTouched',
   });
   const { handleSubmit } = methods;
   //#endregion  //*============== Form
 
   //#region //*============== Form Submit
-  const onSubmit: SubmitHandler<LoginData> = (data) => {
-    toast.promise(
-      axiosClient
-        .post<ApiUserDataReturn<User>>(`/${role}/login`, data)
-        .then((res) => {
-          const data = res.data.data;
-          login(data);
-        }),
-      {
-        ...DEFAULT_TOAST_MESSAGE,
-        success: 'Berhasil! Anda bisa masuk ke akun anda',
-      }
-    );
+  const onSubmit: SubmitHandler<RegisterData> = (data) => {
+    // eslint-disable-next-line no-console
+    console.log(data);
+    // toast.promise(
+    //   axiosClient
+    //     .post<ApiUserDataReturn<User>>(`/${role}/register`, data)
+    //     .then((res) => {
+    //       const data = res.data.data;
+    //       login(data);
+    //     }),
+    //   {
+    //     ...DEFAULT_TOAST_MESSAGE,
+    //     success: 'Berhasil! Anda bisa masuk ke akun anda',
+    //   }
+    // );
 
     return;
   };
@@ -90,7 +86,7 @@ function LoginPage({ role }: LoginPageProps) {
           </div>
           <div className='flex z-10 flex-col justify-center px-4 pt-0 pb-12 bg-white sm:px-6 lg:flex-none lg:px-20 xl:px-24'>
             <UnstyledLink
-              href='#login'
+              href='#register'
               className='block relative -mb-1 w-full h-12 bg-white sm:hidden sm:h-16'
             >
               <div className='absolute top-2 left-1/2 w-16 h-2 bg-gray-200 rounded-full -translate-x-1/2'>
@@ -101,15 +97,15 @@ function LoginPage({ role }: LoginPageProps) {
               <div className='w-full'>
                 <Logo />
                 <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
-                  Masuk sebagai {GET_ROLES_FROM_EN[role]}
+                  Daftar akun sebagai {GET_ROLES_FROM_EN[role]}
                 </h2>
                 <p className='mt-2 text-sm text-gray-600'>
-                  Anda juga bisa masuk sebagai{' '}
+                  Anda juga bisa daftar sebagai{' '}
                   {roles
                     .filter((r) => r !== role)
                     .map((role, i) => (
                       <React.Fragment key={role}>
-                        <CustomLink href={`/login/${role}`}>
+                        <CustomLink href={`/register/${role}`}>
                           {GET_ROLES_FROM_EN[role]}
                         </CustomLink>
                         {i === 0 && <span> atau </span>}
@@ -123,36 +119,25 @@ function LoginPage({ role }: LoginPageProps) {
                   <FormProvider {...methods}>
                     <form
                       onSubmit={handleSubmit(onSubmit)}
-                      className='px-2 py-4 space-y-6 w-full rounded-md shadow-inner'
-                      id='login'
+                      className='space-y-6'
+                      id='register'
                     >
-                      <Input
-                        id='email'
-                        label='Email'
-                        validation={{ required: 'Email harus diisi' }}
-                      />
-
-                      <PasswordInput
-                        id='password'
-                        label='Password'
-                        validation={{ required: 'Password harus diisi' }}
-                      />
-
+                      <RegisterFactory role={role} />
                       <div>
                         <Button
                           isLoading={isLoading}
                           className='justify-center w-full'
                           type='submit'
                         >
-                          Login
+                          Daftar
                         </Button>
                       </div>
 
                       <div className='flex justify-between items-center'>
-                        <p>Belum memiliki akun?</p>
+                        <p>Sudah memiliki akun?</p>
                         <div className='text-sm'>
-                          <PrimaryLink href={`/register/${role}`}>
-                            Daftar Sekarang
+                          <PrimaryLink href={`/login/${role}`}>
+                            Masuk
                           </PrimaryLink>
                         </div>
                       </div>
@@ -168,7 +153,7 @@ function LoginPage({ role }: LoginPageProps) {
   );
 }
 
-export default withAuth(LoginPage, 'auth');
+export default withAuth(RegisterPage, 'auth');
 
 interface IParams extends ParsedUrlQuery {
   role: typeof ROLES[number];
