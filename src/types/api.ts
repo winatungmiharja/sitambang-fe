@@ -20,3 +20,10 @@ export interface ApiUserDataReturn<D> {
   role: keyof typeof Role;
   token: string;
 }
+
+export interface Tools {
+  id: number;
+  name: string;
+  employeeID: number;
+  condition: string;
+}

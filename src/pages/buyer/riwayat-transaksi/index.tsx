@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { HiPlus } from 'react-icons/hi';
 
 import withAuth from '@/components/hoc/withAuth';
 import Layout from '@/components/layout/Layout';
@@ -14,17 +13,11 @@ function IndexPage() {
       <MenuHeader headerVariant='transaksi'>
         <MenuHeader.Heading>Riwayat Transaksi</MenuHeader.Heading>
         <MenuHeader.Subheading>
-          Berikut ini merupakan daftar riwayat transaksi
+          Berikut ini merupakan daftar riwayat transaksi anda
         </MenuHeader.Subheading>
-        <MenuHeader.ButtonGroup>
-          <MenuHeader.ButtonChild href='/admin/riwayat-transaksi/create'>
-            <span className='hidden sm:block'>Tambah Riwayat Transaksi</span>
-            <HiPlus size={20} />
-          </MenuHeader.ButtonChild>
-        </MenuHeader.ButtonGroup>
       </MenuHeader>
     </Layout>
   );
 }
 
-export default withAuth(IndexPage, 'admin');
+export default withAuth(IndexPage, 'buyer');

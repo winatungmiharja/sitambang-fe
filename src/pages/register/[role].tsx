@@ -12,6 +12,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import axiosClient from '@/lib/axios';
+import { formatDateForAPI } from '@/lib/date';
 import useLoadingToast from '@/hooks/toast/useLoadingToast';
 
 import Button from '@/components/buttons/Button';
@@ -35,6 +36,12 @@ type RegisterData = {
   name: string;
   email: string;
   password: string;
+  gender: string;
+  address: string;
+  place_of_birth: string;
+  date_of_birth: string;
+  position: string;
+  phone_number: string;
 };
 
 type RegisterPageProps = InferGetStaticPropsType<typeof getStaticProps> &
@@ -58,14 +65,23 @@ function RegisterPage({ role }: RegisterPageProps) {
 
   //#region //*============== Form Submit ===========
   const onSubmit: SubmitHandler<RegisterData> = async (data) => {
+    const sendData =
+      role === 'employee'
+        ? {
+            ...data,
+            date_of_birth: formatDateForAPI(new Date(data.date_of_birth)),
+          }
+        : { ...data };
+
     // eslint-disable-next-line no-console
-    console.log(data);
+    console.log(sendData);
+
     toast.loading('loading ...');
 
     try {
       const response = await axiosClient.post<ApiRouteReturn>(
         `/${role}/register`,
-        data
+        sendData
       );
 
       if (response.data.error) {
@@ -74,8 +90,8 @@ function RegisterPage({ role }: RegisterPageProps) {
         return;
       }
 
-      toast.success(response.data.message);
       route.replace(`/login/${role}`);
+      toast.success(response.data.message);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.dismiss();

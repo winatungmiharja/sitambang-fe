@@ -9,15 +9,15 @@ import MenuHeader from '@/container/text/MenuHeader';
 function IndexPage() {
   return (
     <Layout>
-      <Seo templateTitle='Peralatan' />
+      <Seo templateTitle='Buat Pemesanan' />
       <MenuHeader headerVariant='pemesanan'>
-        <MenuHeader.Heading>Verifikasi Pemesanan</MenuHeader.Heading>
+        <MenuHeader.Heading>Pemesanan</MenuHeader.Heading>
         <MenuHeader.Subheading>
-          Berikut ini merupakan daftar verifikasi pemesanan
+          Berikut ini merupakan daftar formulir pemesanan anda
         </MenuHeader.Subheading>
       </MenuHeader>
     </Layout>
   );
 }
 
-export default withAuth(IndexPage, 'admin');
+export default withAuth(IndexPage, 'buyer');

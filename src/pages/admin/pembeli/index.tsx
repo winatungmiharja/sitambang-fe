@@ -6,7 +6,7 @@ import Seo from '@/components/Seo';
 
 import MenuHeader from '@/container/text/MenuHeader';
 
-function PeralatanPage() {
+function IndexPage() {
   return (
     <Layout>
       <Seo templateTitle='Peralatan' />
@@ -20,4 +20,4 @@ function PeralatanPage() {
   );
 }
 
-export default withAuth(PeralatanPage, 'admin');
+export default withAuth(IndexPage, 'admin');

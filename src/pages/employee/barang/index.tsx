@@ -10,15 +10,15 @@ import MenuHeader from '@/container/text/MenuHeader';
 function IndexPage() {
   return (
     <Layout>
-      <Seo templateTitle='Peralatan' />
-      <MenuHeader headerVariant='karyawan'>
-        <MenuHeader.Heading>Data Karyawan</MenuHeader.Heading>
+      <Seo templateTitle='Daftar Barang' />
+      <MenuHeader headerVariant='barang'>
+        <MenuHeader.Heading>Data Informasi Barang</MenuHeader.Heading>
         <MenuHeader.Subheading>
-          Berikut ini merupakan daftar karyawan
+          Berikut ini merupakan daftar barang yang kami jual
         </MenuHeader.Subheading>
         <MenuHeader.ButtonGroup>
-          <MenuHeader.ButtonChild href='/admin/karyawan/create'>
-            <span className='hidden sm:block'>Tambah Karyawan</span>
+          <MenuHeader.ButtonChild href='/employee/buat-pemesanan/'>
+            <span className='hidden sm:block'>Tambah Pemesanan</span>
             <HiPlus size={20} />
           </MenuHeader.ButtonChild>
         </MenuHeader.ButtonGroup>
@@ -27,4 +27,4 @@ function IndexPage() {
   );
 }
 
-export default withAuth(IndexPage, 'admin');
+export default withAuth(IndexPage, 'employee');
