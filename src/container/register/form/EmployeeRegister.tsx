@@ -61,17 +61,17 @@ export default function EmployeeRegister() {
       </SelectInput>
 
       <div className='grid grid-cols-2 gap-4'>
-        <Input
-          id='place_of_birth'
-          label='Tempat Lahir'
-          validation={{ required: 'Tempat lahir harus diisi' }}
-        />
         <DatePicker
           id='date_of_birth'
           label='Tanggal Lahir'
           placeholder='dd/mm/yyyy'
           maxDate={new Date()}
           validation={{ required: 'Tanggal lahir harus diisi' }}
+        />
+        <Input
+          id='place_of_birth'
+          label='Tempat Lahir'
+          validation={{ required: 'Tempat lahir harus diisi' }}
         />
       </div>
       <TextArea

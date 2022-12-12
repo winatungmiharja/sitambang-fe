@@ -60,24 +60,32 @@ function RegisterPage({ role }: RegisterPageProps) {
   const onSubmit: SubmitHandler<RegisterData> = async (data) => {
     // eslint-disable-next-line no-console
     console.log(data);
+    toast.loading('loading ...');
+
     try {
       const response = await axiosClient.post<ApiRouteReturn>(
         `/${role}/register`,
         data
       );
+
       if (response.data.error) {
-        toast.error(response.data.error);
+        toast.dismiss();
+        toast.error(response.data.error ?? DEFAULT_TOAST_MESSAGE.error);
         return;
       }
+
       toast.success(response.data.message);
       route.replace(`/login/${role}`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.error);
+        toast.dismiss();
+        toast.error(error.response?.data.error ?? DEFAULT_TOAST_MESSAGE.error);
         return;
       }
+
       toast.error(DEFAULT_TOAST_MESSAGE.error);
     }
+    toast.dismiss();
     return;
   };
   //#endregion //*============== Form Submit ===========

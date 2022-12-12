@@ -4,14 +4,14 @@ import withAuth from '@/components/hoc/withAuth';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 
-function IndexPage() {
+function BarangPage() {
   return (
     <Layout>
-      <Seo templateTitle='Index' />
+      <Seo templateTitle='Barang' />
 
-      <h1>Index Admin</h1>
+      <h1>Barang</h1>
     </Layout>
   );
 }
 
-export default withAuth(IndexPage, 'admin');
+export default withAuth(BarangPage, 'buyer');
