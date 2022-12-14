@@ -11,22 +11,21 @@ import clsxm from '@/lib/clsxm';
 import useDialog from '@/hooks/useDialog';
 
 import Button from '@/components/buttons/Button';
-import Input from '@/components/forms/Input';
-import SelectInput from '@/components/forms/SelectInput';
 
-import { toolsCondition } from '@/constant/form';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
-import { ApiReturn, Tools } from '@/types/api';
+import BuyerRegister from '../register/form/BuyerRegister';
 
-type PeralatanActionProps = {
-  data: Pick<Tools, 'name' | 'condition' | 'id'>;
-  mutate: KeyedMutator<ApiReturn<Tools[]>>;
+import { ApiReturn, Buyer } from '@/types/api';
+
+type BuyerActionProps = {
+  data: Buyer;
+  mutate: KeyedMutator<ApiReturn<Buyer[]>>;
 };
 
-type EditData = Pick<Tools, 'name' | 'condition'>;
+type EditData = Pick<Buyer, 'name' | 'email' | 'phone_number'>;
 
-const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
+const BuyerAction = ({ data, mutate }: BuyerActionProps) => {
   const dialog = useDialog();
 
   // edit modal state
@@ -35,10 +34,7 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   //#region  //*=========== Form ===========
   const methods = useForm<EditData>({
     mode: 'onTouched',
-    defaultValues: {
-      name: data.name,
-      condition: data.condition,
-    },
+    defaultValues: data,
   });
 
   const {
@@ -52,10 +48,9 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   const onUpdate: SubmitHandler<EditData> = (input) => {
     toast.promise(
       axiosClient
-        .post('/pondtool/update', {
+        .post('/buyer/update', {
+          ...input,
           id: data.id,
-          name: input.name,
-          condition: input.condition,
         })
         .then(() => {
           mutate();
@@ -73,16 +68,16 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
     dialog({
       title: (
         <>
-          Hapus Peralatan Tambak <span className='font-bold'>{data.name}</span>
+          Hapus Data Pembeli <span className='font-bold'>{data.name}</span>
         </>
       ),
       description:
-        'Setelah Peralatan Tambak terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
+        'Setelah Data Pembeli terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
       submitText: 'Hapus',
       variant: 'danger',
     }).then(() => {
       toast.promise(
-        axiosClient.delete('/pondtool/delete').then(() => {
+        axiosClient.delete('/buyer/delete').then(() => {
           mutate();
         }),
         {
@@ -186,34 +181,16 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
                       as='h3'
                       className='text-lg font-medium leading-6 text-gray-900'
                     >
-                      Edit Peralatan Tambak
+                      Edit Data Pembeli
                     </Dialog.Title>
                   </div>
                 </div>
                 <FormProvider {...methods}>
                   <form onSubmit={handleSubmit(onUpdate)} className='mt-8'>
-                    <div className='grid gap-4 w-full sm:grid-cols-2'>
-                      <Input
-                        label='Nama Peralatan'
-                        id='name'
-                        validation={{
-                          required: 'Nama Peralatan Tambak baru harus diisi',
-                        }}
-                      />
-                      <SelectInput
-                        id='condition'
-                        label='Kondisi'
-                        validation={{
-                          required: 'Kondisi harus diisi',
-                        }}
-                      >
-                        {toolsCondition.map((item) => (
-                          <option key={item} value={item}>
-                            {item}
-                          </option>
-                        ))}
-                      </SelectInput>
+                    <div className='space-y-6'>
+                      <BuyerRegister />
                     </div>
+
                     <div className='mt-12 sm:flex sm:flex-row-reverse sm:mt-8'>
                       <Button
                         disabled={!isDirty}
@@ -246,4 +223,4 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   );
 };
 
-export default PeralatanAction;
+export default BuyerAction;

@@ -13,7 +13,7 @@ import Table from '@/components/table/Table';
 import StokAction from '@/container/action/StokAction';
 import MenuHeader from '@/container/text/MenuHeader';
 
-import { ApiReturn, Stocks, Tools } from '@/types/api';
+import { ApiReturn, Stocks } from '@/types/api';
 
 function IndexPage() {
   const {
@@ -42,14 +42,9 @@ function IndexPage() {
       },
       {
         Header: 'Aksi',
-        accessor: (row) => [row.id, row.name, row.totalStocks, row.priceStock],
-        Cell: ({
-          value: [id, name, totalStocks, priceStock],
-        }: Cell<Tools, [number, string, number, number]>) => (
-          <StokAction
-            data={{ id, name, totalStocks, priceStock }}
-            mutate={mutate}
-          />
+        accessor: (row) => [row],
+        Cell: ({ value: [stock] }: Cell<Stocks, [Stocks]>) => (
+          <StokAction data={stock} mutate={mutate} />
         ),
         disableSortBy: true,
         className: 'capitalize',

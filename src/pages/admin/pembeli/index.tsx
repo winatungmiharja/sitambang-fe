@@ -1,12 +1,58 @@
 import * as React from 'react';
+import { Cell, Column } from 'react-table';
+import useSWR from 'swr';
+
+import useSWRWithToast from '@/hooks/toast/useSWRWithToast';
 
 import withAuth from '@/components/hoc/withAuth';
 import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
+import Table from '@/components/table/Table';
 
+import BuyerAction from '@/container/action/BuyerAction';
 import MenuHeader from '@/container/text/MenuHeader';
 
+import { ApiReturn, Buyer } from '@/types/api';
+
 function IndexPage() {
+  const {
+    data: apiBuyer,
+    isLoading,
+    mutate,
+  } = useSWRWithToast(useSWR<ApiReturn<Buyer[]>>('/buyer/view'));
+
+  const buyer: Buyer[] = apiBuyer?.data ?? [];
+  const columns = React.useMemo<Column<Buyer>[]>(
+    () => [
+      {
+        Header: 'Nama',
+        accessor: (row) => row.name,
+        className: 'capitalize',
+      },
+
+      {
+        Header: 'Email',
+        accessor: (row) => row.email,
+        className: 'capitalize',
+      },
+      {
+        Header: 'Telp',
+        accessor: (row) => row.phone_number,
+        className: 'capitalize',
+      },
+      {
+        Header: 'Aksi',
+        accessor: (row) => [row],
+        Cell: ({ value: [buyer] }: Cell<Buyer, [Buyer]>) => (
+          <BuyerAction data={buyer} mutate={mutate} />
+        ),
+        disableSortBy: true,
+        className: 'capitalize',
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   return (
     <Layout>
       <Seo templateTitle='Peralatan' />
@@ -16,6 +62,12 @@ function IndexPage() {
           Berikut ini merupakan daftar pembeli
         </MenuHeader.Subheading>
       </MenuHeader>
+      <Table
+        className='mt-12'
+        data={buyer}
+        columns={columns}
+        isLoading={isLoading}
+      />
     </Layout>
   );
 }

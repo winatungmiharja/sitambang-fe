@@ -54,11 +54,9 @@ function IndexPage() {
       },
       {
         Header: 'Aksi',
-        accessor: (row) => [row.id, row.name, row.condition],
-        Cell: ({
-          value: [id, name, condition],
-        }: Cell<Tools, [number, string, keyof typeof Condition]>) => (
-          <PeralatanAction data={{ id, name, condition }} mutate={mutate} />
+        accessor: (row) => [row],
+        Cell: ({ value: [tools] }: Cell<Tools, [Tools]>) => (
+          <PeralatanAction data={tools} mutate={mutate} />
         ),
         disableSortBy: true,
         className: 'capitalize',
