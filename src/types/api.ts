@@ -21,9 +21,22 @@ export interface ApiUserDataReturn<D> {
   token: string;
 }
 
+export enum Condition {
+  'Sempurna',
+  'Bagus',
+  'Rusak',
+}
+
 export interface Tools {
   id: number;
   name: string;
   employeeID: number;
-  condition: string;
+  condition: keyof typeof Condition;
+}
+
+export interface Stocks {
+  id: number;
+  name: string;
+  totalStocks: number;
+  priceStock: number;
 }

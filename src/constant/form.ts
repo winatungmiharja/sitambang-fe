@@ -1,3 +1,5 @@
+import { Condition } from '@/types/api';
+
 export const genderOption = [
   {
     value: 'male',
@@ -19,4 +21,10 @@ export const positionOption = [
   'Manager Keuangan',
   'Manager Informasi Teknologi',
   'Direktur',
+];
+
+export const toolsCondition: (keyof typeof Condition)[] = [
+  'Bagus',
+  'Rusak',
+  'Sempurna',
 ];
