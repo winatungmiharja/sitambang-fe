@@ -3,7 +3,6 @@ import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import {
-  HiOutlineBadgeCheck,
   HiOutlineBriefcase,
   HiOutlineDocumentAdd,
   HiOutlineDocumentSearch,
@@ -21,13 +20,8 @@ import useAuthStore from '@/store/useAuthStore';
 //#region  //*=========== Role Navigation ===========
 const adminNav = [
   {
-    name: 'Verifikasi Pemesanan',
-    href: '/admin/verifikasi-pemesanan',
-    icon: HiOutlineBadgeCheck,
-  },
-  {
-    name: 'Riwayat Transaksi',
-    href: '/admin/riwayat-transaksi',
+    name: 'Data Transaksi',
+    href: '/admin/transaksi',
     icon: HiOutlineDocumentText,
   },
   {
@@ -53,36 +47,31 @@ const adminNav = [
 ];
 const employeeNav = [
   {
+    name: 'Data Transaksi',
+    href: '/employee/transaksi',
+    icon: HiOutlineDocumentText,
+  },
+  {
     name: 'Data Barang',
     href: '/employee/barang',
     icon: HiOutlineDocumentSearch,
   },
   {
-    name: 'Riwayat Transaksi',
-    href: '/employee/riwayat-transaksi',
-    icon: HiOutlineDocumentText,
-  },
-  {
-    name: 'Buat Pemesanan',
-    href: '/employee/buat-pemesanan',
-    icon: HiOutlineDocumentAdd,
+    name: 'Data Peralatan',
+    href: '/employee/peralatan',
+    icon: HiOutlineBriefcase,
   },
 ];
 const buyerNav = [
   {
-    name: 'Data Barang',
+    name: 'Buat Pemesanan',
     href: '/buyer/barang',
-    icon: HiOutlineDocumentSearch,
+    icon: HiOutlineDocumentAdd,
   },
   {
     name: 'Riwayat Transaksi',
     href: '/buyer/riwayat-transaksi',
     icon: HiOutlineDocumentText,
-  },
-  {
-    name: 'Buat Pemesanan',
-    href: '/buyer/buat-pemesanan',
-    icon: HiOutlineDocumentAdd,
   },
 ];
 const navigationObj = {

@@ -60,6 +60,7 @@ function CreatePage() {
               <div className='max-w-sm'>
                 <Input
                   label='Nama Barang'
+                  placeholder='Isikan Nama Barang'
                   id='name'
                   validation={{
                     required: 'Nama Barang baru harus diisi',

@@ -10,7 +10,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import Table from '@/components/table/Table';
 
-import StokAction from '@/container/action/StokAction';
+import StokAction from '@/container/action/admin/StokAction';
 import MenuHeader from '@/container/text/MenuHeader';
 
 import { ApiReturn, Stocks } from '@/types/api';
@@ -27,8 +27,11 @@ function IndexPage() {
     () => [
       {
         Header: 'Nama Barang',
-        accessor: (row) => row.name,
+        accessor: (row) => [row.name],
         className: 'capitalize',
+        Cell: ({ value: [name] }: Cell<Stocks, [string]>) => (
+          <span className='font-semibold text-primary-500'>{name}</span>
+        ),
       },
       {
         Header: 'Harga Barang',

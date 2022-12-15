@@ -8,25 +8,38 @@ import { KeyedMutator } from 'swr';
 
 import axiosClient from '@/lib/axios';
 import clsxm from '@/lib/clsxm';
+import { formatDateForAPI } from '@/lib/date';
 import useDialog from '@/hooks/useDialog';
 
 import Button from '@/components/buttons/Button';
+import DatePicker from '@/components/forms/DatePicker';
 import Input from '@/components/forms/Input';
 import SelectInput from '@/components/forms/SelectInput';
+import TextArea from '@/components/forms/TextArea';
 
-import { toolsCondition } from '@/constant/form';
+import { genderOption, positionOption } from '@/constant/form';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
-import { ApiReturn, Tools } from '@/types/api';
+import { ApiReturn, Employee } from '@/types/api';
 
-type PeralatanActionProps = {
-  data: Pick<Tools, 'name' | 'condition' | 'id'>;
-  mutate: KeyedMutator<ApiReturn<Tools[]>>;
+type EmployeeActionProps = {
+  data: Employee;
+  mutate: KeyedMutator<ApiReturn<Employee[]>>;
 };
 
-type EditData = Pick<Tools, 'name' | 'condition'>;
+type EditData = Pick<
+  Employee,
+  | 'name'
+  | 'email'
+  | 'gender'
+  | 'address'
+  | 'date_of_birth'
+  | 'place_of_birth'
+  | 'position'
+  | 'phone_number'
+>;
 
-const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
+const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
   const dialog = useDialog();
 
   // edit modal state
@@ -35,10 +48,7 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   //#region  //*=========== Form ===========
   const methods = useForm<EditData>({
     mode: 'onTouched',
-    defaultValues: {
-      name: data.name,
-      condition: data.condition,
-    },
+    defaultValues: data,
   });
 
   const {
@@ -50,17 +60,23 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
 
   //#region  //*=========== API Calls ===========
   const onUpdate: SubmitHandler<EditData> = (input) => {
+    const mappedData = {
+      employeId: data.id,
+      name: input.name,
+      email: input.email,
+      gender: input.gender,
+      address: input.address,
+      place_of_birth: input.place_of_birth,
+      date_of_birth: formatDateForAPI(new Date(input.date_of_birth)),
+      position: input.position,
+      phone_number: input.phone_number,
+    };
+
     toast.promise(
-      axiosClient
-        .post('/pondtool/update', {
-          id: data.id,
-          name: input.name,
-          condition: input.condition,
-        })
-        .then(() => {
-          mutate();
-          closeModal();
-        }),
+      axiosClient.post('/employee/update', mappedData).then(() => {
+        mutate();
+        closeModal();
+      }),
       {
         ...DEFAULT_TOAST_MESSAGE,
         loading: 'Mengubah data',
@@ -73,18 +89,22 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
     dialog({
       title: (
         <>
-          Hapus Peralatan Tambak <span className='font-bold'>{data.name}</span>
+          Hapus Data Karyawan <span className='font-bold'>{data.name}</span>
         </>
       ),
       description:
-        'Setelah Peralatan Tambak terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
+        'Setelah Data Karyawan terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
       submitText: 'Hapus',
       variant: 'danger',
     }).then(() => {
       toast.promise(
-        axiosClient.delete('/pondtool/delete').then(() => {
-          mutate();
-        }),
+        axiosClient
+          .post('/employee/delete', {
+            id: data.id,
+          })
+          .then(() => {
+            mutate();
+          }),
         {
           ...DEFAULT_TOAST_MESSAGE,
           loading: 'Menghapus data',
@@ -93,6 +113,7 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
       );
     });
   };
+
   //#endregion  //*======== API Calls ===========
 
   //#region  //*=========== Modal ===========
@@ -186,34 +207,79 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
                       as='h3'
                       className='text-lg font-medium leading-6 text-gray-900'
                     >
-                      Edit Peralatan Tambak
+                      Edit Data Karyawan
                     </Dialog.Title>
                   </div>
                 </div>
                 <FormProvider {...methods}>
                   <form onSubmit={handleSubmit(onUpdate)} className='mt-8'>
-                    <div className='grid gap-4 w-full sm:grid-cols-2'>
+                    <div className='space-y-6'>
                       <Input
-                        label='Nama Peralatan'
                         id='name'
-                        validation={{
-                          required: 'Nama Peralatan Tambak baru harus diisi',
-                        }}
+                        label='Nama'
+                        validation={{ required: 'Nama harus diisi' }}
                       />
+                      <Input
+                        id='email'
+                        label='Email'
+                        validation={{ required: 'Email harus diisi' }}
+                      />
+                      <Input
+                        id='phone_number'
+                        label='Nomor Telepon'
+                        helperText='contoh : 081234567890'
+                        validation={{ required: 'Nomor Telepon harus diisi' }}
+                      />
+
                       <SelectInput
-                        id='condition'
-                        label='Kondisi'
+                        id='gender'
+                        label='Jenis Kelamin'
                         validation={{
-                          required: 'Kondisi harus diisi',
+                          required: 'Jenis Kelamin harus diisi',
                         }}
                       >
-                        {toolsCondition.map((item) => (
+                        {genderOption.map((item) => (
+                          <option key={item.value} value={item.value}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </SelectInput>
+
+                      <SelectInput
+                        id='position'
+                        label='Jabatan'
+                        validation={{
+                          required: 'Jabatan harus diisi',
+                        }}
+                      >
+                        {positionOption.map((item) => (
                           <option key={item} value={item}>
                             {item}
                           </option>
                         ))}
                       </SelectInput>
+
+                      <div className='grid grid-cols-2 gap-4'>
+                        <DatePicker
+                          id='date_of_birth'
+                          label='Tanggal Lahir'
+                          placeholder='dd/mm/yyyy'
+                          maxDate={new Date()}
+                          validation={{ required: 'Tanggal lahir harus diisi' }}
+                        />
+                        <Input
+                          id='place_of_birth'
+                          label='Tempat Lahir'
+                          validation={{ required: 'Tempat lahir harus diisi' }}
+                        />
+                      </div>
+                      <TextArea
+                        id='address'
+                        label='Alamat'
+                        validation={{ required: 'Alamat harus diisi' }}
+                      />
                     </div>
+
                     <div className='mt-12 sm:flex sm:flex-row-reverse sm:mt-8'>
                       <Button
                         disabled={!isDirty}
@@ -246,4 +312,4 @@ const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   );
 };
 
-export default PeralatanAction;
+export default EmployeeAction;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { HiPlus } from 'react-icons/hi';
 import { Cell, Column } from 'react-table';
 import useSWR from 'swr';
 
@@ -74,18 +73,12 @@ function IndexPage() {
   );
   return (
     <Layout>
-      <Seo templateTitle='Peralatan' />
+      <Seo templateTitle='Peralatan | Karyawan' />
       <MenuHeader headerVariant='peralatan'>
         <MenuHeader.Heading>Data Peralatan Tambak</MenuHeader.Heading>
         <MenuHeader.Subheading>
           Berikut ini merupakan daftar peralatan tambak
         </MenuHeader.Subheading>
-        <MenuHeader.ButtonGroup>
-          <MenuHeader.ButtonChild href='/admin/peralatan/create'>
-            <span className='hidden sm:block'>Tambah Peralatan</span>
-            <HiPlus size={20} />
-          </MenuHeader.ButtonChild>
-        </MenuHeader.ButtonGroup>
       </MenuHeader>
       <Table
         className='mt-12'
@@ -97,4 +90,4 @@ function IndexPage() {
   );
 }
 
-export default withAuth(IndexPage, 'admin');
+export default withAuth(IndexPage, 'employee');

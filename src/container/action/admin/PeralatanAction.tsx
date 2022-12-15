@@ -11,31 +11,22 @@ import clsxm from '@/lib/clsxm';
 import useDialog from '@/hooks/useDialog';
 
 import Button from '@/components/buttons/Button';
+import Input from '@/components/forms/Input';
+import SelectInput from '@/components/forms/SelectInput';
 
+import { toolsCondition } from '@/constant/form';
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
 
-import EmployeeRegister from '../register/form/EmployeeRegister';
+import { ApiReturn, Tools } from '@/types/api';
 
-import { ApiReturn, Employee } from '@/types/api';
-
-type EmployeeActionProps = {
-  data: Employee;
-  mutate: KeyedMutator<ApiReturn<Employee[]>>;
+type PeralatanActionProps = {
+  data: Pick<Tools, 'name' | 'condition' | 'id' | 'idEmployee'>;
+  mutate: KeyedMutator<ApiReturn<Tools[]>>;
 };
 
-type EditData = Pick<
-  Employee,
-  | 'name'
-  | 'email'
-  | 'gender'
-  | 'address'
-  | 'date_of_birth'
-  | 'place_of_birth'
-  | 'position'
-  | 'phone_number'
->;
+type EditData = Pick<Tools, 'name' | 'condition'>;
 
-const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
+const PeralatanAction = ({ data, mutate }: PeralatanActionProps) => {
   const dialog = useDialog();
 
   // edit modal state
@@ -44,7 +35,10 @@ const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
   //#region  //*=========== Form ===========
   const methods = useForm<EditData>({
     mode: 'onTouched',
-    defaultValues: data,
+    defaultValues: {
+      name: data.name,
+      condition: data.condition,
+    },
   });
 
   const {
@@ -58,9 +52,11 @@ const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
   const onUpdate: SubmitHandler<EditData> = (input) => {
     toast.promise(
       axiosClient
-        .post('/employee/update', {
-          ...input,
+        .post('/pondtool/update', {
           id: data.id,
+          name: input.name,
+          condition: input.condition,
+          idEmployee: data.idEmployee,
         })
         .then(() => {
           mutate();
@@ -78,18 +74,22 @@ const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
     dialog({
       title: (
         <>
-          Hapus Data Karyawan <span className='font-bold'>{data.name}</span>
+          Hapus Peralatan Tambak <span className='font-bold'>{data.name}</span>
         </>
       ),
       description:
-        'Setelah Data Karyawan terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
+        'Setelah Peralatan Tambak terhapus maka data tidak bisa dikembalikan, apakah Anda yakin?',
       submitText: 'Hapus',
       variant: 'danger',
     }).then(() => {
       toast.promise(
-        axiosClient.delete('/employee/delete').then(() => {
-          mutate();
-        }),
+        axiosClient
+          .post('/pondtool/delete', {
+            id: data.id,
+          })
+          .then(() => {
+            mutate();
+          }),
         {
           ...DEFAULT_TOAST_MESSAGE,
           loading: 'Menghapus data',
@@ -191,16 +191,34 @@ const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
                       as='h3'
                       className='text-lg font-medium leading-6 text-gray-900'
                     >
-                      Edit Data Karyawan
+                      Edit Peralatan Tambak
                     </Dialog.Title>
                   </div>
                 </div>
                 <FormProvider {...methods}>
                   <form onSubmit={handleSubmit(onUpdate)} className='mt-8'>
-                    <div className='space-y-6'>
-                      <EmployeeRegister />
+                    <div className='grid gap-4 w-full sm:grid-cols-2'>
+                      <Input
+                        label='Nama Peralatan'
+                        id='name'
+                        validation={{
+                          required: 'Nama Peralatan Tambak baru harus diisi',
+                        }}
+                      />
+                      <SelectInput
+                        id='condition'
+                        label='Kondisi'
+                        validation={{
+                          required: 'Kondisi harus diisi',
+                        }}
+                      >
+                        {toolsCondition.map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
+                      </SelectInput>
                     </div>
-
                     <div className='mt-12 sm:flex sm:flex-row-reverse sm:mt-8'>
                       <Button
                         disabled={!isDirty}
@@ -233,4 +251,4 @@ const EmployeeAction = ({ data, mutate }: EmployeeActionProps) => {
   );
 };
 
-export default EmployeeAction;
+export default PeralatanAction;

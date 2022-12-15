@@ -81,9 +81,13 @@ const StokAction = ({ data, mutate }: StokActionProps) => {
       variant: 'danger',
     }).then(() => {
       toast.promise(
-        axiosClient.delete('/stock/delete').then(() => {
-          mutate();
-        }),
+        axiosClient
+          .post('/stock/delete', {
+            id: data.id,
+          })
+          .then(() => {
+            mutate();
+          }),
         {
           ...DEFAULT_TOAST_MESSAGE,
           loading: 'Menghapus data',

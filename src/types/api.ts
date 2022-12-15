@@ -1,3 +1,5 @@
+import { FileWithPreview } from './dropzone';
+
 export enum Role {
   'admin',
   'employee',
@@ -50,8 +52,9 @@ export enum Condition {
 export interface Tools {
   id: number;
   name: string;
-  employeeID: number;
   condition: keyof typeof Condition;
+  idEmployee: number;
+  nameEmployee: string;
 }
 //#endregion  //*======== /pondtool ===========
 
@@ -63,3 +66,20 @@ export interface Stocks {
   priceStock: number;
 }
 //#endregion  //*======== /stock ===========
+
+enum PaymentStatus {
+  'pending',
+  'confirmed',
+  'cancelled',
+}
+
+export interface Payment {
+  id: number;
+  totalPayment: number;
+  paymentMethod: string;
+  statusPayment: keyof typeof PaymentStatus;
+  paymentImage: FileWithPreview[];
+  purchasedStock: number;
+  idStock: number;
+  idBuyer: number;
+}

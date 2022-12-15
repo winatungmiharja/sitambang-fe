@@ -6,18 +6,18 @@ import Seo from '@/components/Seo';
 
 import MenuHeader from '@/container/text/MenuHeader';
 
-function IndexPage() {
+function CreatePage() {
   return (
     <Layout>
-      <Seo templateTitle='Peralatan' />
+      <Seo templateTitle='Create' />
       <MenuHeader headerVariant='transaksi'>
-        <MenuHeader.Heading>Riwayat Transaksi</MenuHeader.Heading>
-        <MenuHeader.Subheading>
-          Berikut ini merupakan daftar riwayat transaksi anda
-        </MenuHeader.Subheading>
+        <MenuHeader.Heading>Tambah Riwayat Transaksi</MenuHeader.Heading>
+        <MenuHeader.BackLink href='/admin/transaksi'>
+          Kembali
+        </MenuHeader.BackLink>
       </MenuHeader>
     </Layout>
   );
 }
 
-export default withAuth(IndexPage, 'employee');
+export default withAuth(CreatePage, 'employee');

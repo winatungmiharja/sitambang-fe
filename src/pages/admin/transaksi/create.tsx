@@ -12,7 +12,7 @@ function CreatePage() {
       <Seo templateTitle='Create' />
       <MenuHeader headerVariant='transaksi'>
         <MenuHeader.Heading>Tambah Riwayat Transaksi</MenuHeader.Heading>
-        <MenuHeader.BackLink href='/admin/riwayat-transaksi'>
+        <MenuHeader.BackLink href='/admin/transaksi'>
           Kembali
         </MenuHeader.BackLink>
       </MenuHeader>

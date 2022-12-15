@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { HiPlus } from 'react-icons/hi';
 import { Cell, Column } from 'react-table';
 import useSWR from 'swr';
 
@@ -66,17 +67,21 @@ function IndexPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
-
   return (
     <Layout>
       <Seo templateTitle='Peralatan' />
       <MenuHeader headerVariant='transaksi'>
-        <MenuHeader.Heading>Riwayat Transaksi</MenuHeader.Heading>
+        <MenuHeader.Heading>Data Transaksi</MenuHeader.Heading>
         <MenuHeader.Subheading>
-          Berikut ini merupakan daftar riwayat transaksi anda
+          Berikut ini merupakan daftar transaksi
         </MenuHeader.Subheading>
+        <MenuHeader.ButtonGroup>
+          <MenuHeader.ButtonChild href='/admin/transaksi/create'>
+            <span className='hidden sm:block'>Tambah Transaksi</span>
+            <HiPlus size={20} />
+          </MenuHeader.ButtonChild>
+        </MenuHeader.ButtonGroup>
       </MenuHeader>
-
       <div className='grid grid-cols-3'>
         {VIEW_STATE.map((item) => (
           <button
@@ -105,4 +110,4 @@ function IndexPage() {
   );
 }
 
-export default withAuth(IndexPage, 'buyer');
+export default withAuth(IndexPage, 'employee');

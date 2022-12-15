@@ -10,8 +10,10 @@ module.exports = {
     domains: [
       // For login background image
       'images.unsplash.com',
+      'unsplash.com',
       // temporary dummy avatar
       'avatars.dicebear.com',
+      'firebasestorage.googleapis.com',
     ],
   },
 

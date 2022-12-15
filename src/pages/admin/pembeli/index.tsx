@@ -9,7 +9,7 @@ import Layout from '@/components/layout/Layout';
 import Seo from '@/components/Seo';
 import Table from '@/components/table/Table';
 
-import BuyerAction from '@/container/action/BuyerAction';
+import BuyerAction from '@/container/action/admin/BuyerAction';
 import MenuHeader from '@/container/text/MenuHeader';
 
 import { ApiReturn, Buyer } from '@/types/api';
@@ -26,19 +26,21 @@ function IndexPage() {
     () => [
       {
         Header: 'Nama',
-        accessor: (row) => row.name,
+        accessor: (row) => [row.name],
         className: 'capitalize',
+        Cell: ({ value: [name] }: Cell<Buyer, [string]>) => (
+          <span className='font-semibold text-primary-500'>{name}</span>
+        ),
       },
 
       {
         Header: 'Email',
         accessor: (row) => row.email,
-        className: 'capitalize',
       },
       {
         Header: 'Telp',
         accessor: (row) => row.phone_number,
-        className: 'capitalize',
+        className: 'capitalize w-full',
       },
       {
         Header: 'Aksi',

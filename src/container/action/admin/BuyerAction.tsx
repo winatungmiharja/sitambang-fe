@@ -11,10 +11,9 @@ import clsxm from '@/lib/clsxm';
 import useDialog from '@/hooks/useDialog';
 
 import Button from '@/components/buttons/Button';
+import Input from '@/components/forms/Input';
 
 import { DEFAULT_TOAST_MESSAGE } from '@/constant/toast';
-
-import BuyerRegister from '../register/form/BuyerRegister';
 
 import { ApiReturn, Buyer } from '@/types/api';
 
@@ -49,8 +48,8 @@ const BuyerAction = ({ data, mutate }: BuyerActionProps) => {
     toast.promise(
       axiosClient
         .post('/buyer/update', {
+          buyerId: data.id,
           ...input,
-          id: data.id,
         })
         .then(() => {
           mutate();
@@ -77,9 +76,13 @@ const BuyerAction = ({ data, mutate }: BuyerActionProps) => {
       variant: 'danger',
     }).then(() => {
       toast.promise(
-        axiosClient.delete('/buyer/delete').then(() => {
-          mutate();
-        }),
+        axiosClient
+          .post('/buyer/delete', {
+            buyerId: data.id,
+          })
+          .then(() => {
+            mutate();
+          }),
         {
           ...DEFAULT_TOAST_MESSAGE,
           loading: 'Menghapus data',
@@ -188,7 +191,22 @@ const BuyerAction = ({ data, mutate }: BuyerActionProps) => {
                 <FormProvider {...methods}>
                   <form onSubmit={handleSubmit(onUpdate)} className='mt-8'>
                     <div className='space-y-6'>
-                      <BuyerRegister />
+                      <Input
+                        id='name'
+                        label='Nama'
+                        validation={{ required: 'Nama harus diisi' }}
+                      />
+                      <Input
+                        id='email'
+                        label='Email'
+                        validation={{ required: 'Email harus diisi' }}
+                      />
+                      <Input
+                        id='phone_number'
+                        label='Nomor Telepon'
+                        helperText='contoh : 081234567890'
+                        validation={{ required: 'Nomor Telepon harus diisi' }}
+                      />
                     </div>
 
                     <div className='mt-12 sm:flex sm:flex-row-reverse sm:mt-8'>
