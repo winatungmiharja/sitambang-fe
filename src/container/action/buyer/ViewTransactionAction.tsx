@@ -57,7 +57,8 @@ const ViewTransactionAction = ({
     dialog({
       title: (
         <>
-          Batalkan Transaksi <span className='font-bold'>{data.id}</span>
+          Batalkan Transaksi dari <br />
+          <span className='font-bold'>{data.nameBuyer}</span>
         </>
       ),
       description:
@@ -91,7 +92,8 @@ const ViewTransactionAction = ({
     dialog({
       title: (
         <>
-          Hapus Transaksi <span className='font-bold'>{data.id}</span>
+          Hapus Transaksi dari <br />
+          <span className='font-bold'>{data.nameBuyer}</span>
         </>
       ),
       description:
@@ -120,7 +122,8 @@ const ViewTransactionAction = ({
     dialog({
       title: (
         <>
-          Konfirmasi Transaksi <span className='font-bold'>{data.id}</span>
+          Konfirmasi Transaksi dari <br />
+          <span className='font-bold'>{data.nameBuyer}</span>
         </>
       ),
       description:
@@ -269,40 +272,50 @@ const ViewTransactionAction = ({
                 <FormProvider {...methods}>
                   <div className='mt-8'>
                     <div className='grid grid-cols-2 gap-8'>
-                      <div className='h-fit grid grid-cols-2 gap-4 p-4 bg-primary-50 rounded-md shadow-inner'>
-                        <div className='space-y-4'>
-                          <div>
+                      <div className='flex flex-col gap-4'>
+                        {user?.role !== 'buyer' && (
+                          <div className='flex justify-between'>
                             <p className='text-xs tracking-wider text-gray-500 uppercase'>
-                              Nama Barang
+                              Pembeli
                             </p>
-                            <p>data.name</p>
+                            <p>{data.nameBuyer}</p>
                           </div>
-                          <div>
-                            <p className='text-xs tracking-wider text-gray-500 uppercase'>
-                              Harga/pcs
-                            </p>
-                            <p>{`Rp ${
-                              +data.totalPayment / +data.purchasedStock
-                            }`}</p>
+                        )}
+                        <div className='h-fit grid grid-cols-2 gap-4 p-4 bg-primary-50 rounded-md shadow-inner'>
+                          <div className='space-y-4'>
+                            <div>
+                              <p className='text-xs tracking-wider text-gray-500 uppercase'>
+                                Nama Barang
+                              </p>
+                              <p>{data.nameStock}</p>
+                            </div>
+                            <div>
+                              <p className='text-xs tracking-wider text-gray-500 uppercase'>
+                                Harga/pcs
+                              </p>
+                              <p>{`Rp ${
+                                +data.totalPayment / +data.purchasedStock
+                              }`}</p>
+                            </div>
                           </div>
+                          <div className='space-y-4'>
+                            <div>
+                              <p className='text-xs tracking-wider text-gray-500 uppercase'>
+                                Banyak
+                              </p>
+                              <p>{data.purchasedStock} pcs</p>
+                            </div>
+                            <div>
+                              <p className='text-xs tracking-wider text-gray-500 uppercase'>
+                                Metode Pembayaran
+                              </p>
+                              <p>{data.paymentMethod}</p>
+                            </div>
+                          </div>
+                          <hr className='col-span-2' />
+                          <p>Total</p>
+                          <p className='px-4 py-2 bg-white rounded-md'>{`Rp ${data.totalPayment}`}</p>
                         </div>
-                        <div className='space-y-4'>
-                          <div>
-                            <p className='text-xs tracking-wider text-gray-500 uppercase'>
-                              Banyak
-                            </p>
-                            <p>{data.purchasedStock} pcs</p>
-                          </div>
-                          <div>
-                            <p className='text-xs tracking-wider text-gray-500 uppercase'>
-                              Metode Pembayaran
-                            </p>
-                            <p>{data.paymentMethod}</p>
-                          </div>
-                        </div>
-                        <hr className='col-span-2' />
-                        <p>Total</p>
-                        <p className='px-4 py-2 bg-white rounded-md'>{`Rp ${data.totalPayment}`}</p>
                       </div>
 
                       <div className=''>

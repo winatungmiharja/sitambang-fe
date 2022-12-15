@@ -34,7 +34,7 @@ function IndexPage() {
       },
       {
         Header: 'Nama Barang',
-        accessor: (row) => [row.totalPayment],
+        accessor: (row) => [row.nameStock],
         className: 'capitalize',
         Cell: ({ value: [name] }: Cell<Payment, [string]>) => (
           <span className='font-semibold text-primary-500'>{name}</span>

@@ -29,13 +29,21 @@ function IndexPage() {
   const columns = React.useMemo<Column<Payment>[]>(
     () => [
       {
-        Header: 'Id transaksi',
+        Header: 'Id',
         accessor: (row) => row.id,
         className: 'capitalize',
       },
       {
         Header: 'Nama Barang',
-        accessor: (row) => [row.totalPayment],
+        accessor: (row) => [row.nameStock],
+        className: 'capitalize',
+        Cell: ({ value: [name] }: Cell<Payment, [string]>) => (
+          <span className='font-semibold text-primary-500'>{name}</span>
+        ),
+      },
+      {
+        Header: 'Pembeli',
+        accessor: (row) => [row.nameBuyer],
         className: 'capitalize',
         Cell: ({ value: [name] }: Cell<Payment, [string]>) => (
           <span className='font-semibold text-primary-500'>{name}</span>
@@ -44,16 +52,12 @@ function IndexPage() {
       {
         Header: 'Total Pembayaran',
         accessor: (row) => [row.totalPayment],
-        className: 'capitalize',
+        className: 'capitalize w-full',
         Cell: ({ value: [total] }: Cell<Payment, [string]>) => (
           <span>Rp {total}</span>
         ),
       },
-      {
-        Header: 'Metode Pembayaran',
-        accessor: (row) => row.paymentMethod,
-        className: 'capitalize w-full',
-      },
+
       {
         Header: 'Aksi',
         accessor: (row) => [row],
@@ -76,7 +80,7 @@ function IndexPage() {
           Berikut ini merupakan daftar transaksi
         </MenuHeader.Subheading>
         <MenuHeader.ButtonGroup>
-          <MenuHeader.ButtonChild href='/admin/transaksi/create'>
+          <MenuHeader.ButtonChild href='/employee/transaksi/create'>
             <span className='hidden sm:block'>Tambah Transaksi</span>
             <HiPlus size={20} />
           </MenuHeader.ButtonChild>

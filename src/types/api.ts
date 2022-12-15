@@ -81,5 +81,7 @@ export interface Payment {
   paymentImage: FileWithPreview[];
   purchasedStock: number;
   idStock: number;
+  nameStock: string;
   idBuyer: number;
+  nameBuyer: string;
 }
